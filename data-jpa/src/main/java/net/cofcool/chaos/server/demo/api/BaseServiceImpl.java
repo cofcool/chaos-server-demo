@@ -186,11 +186,11 @@ public abstract class BaseServiceImpl<T, ID, J extends JpaRepository<T, ID>> ext
         return data.map(t ->
             ExecuteResult.of(t, ResultState.SUCCESSFUL, getExceptionCodeManager().getCode(
                 ExceptionCodeDescriptor.SERVER_OK),
-                getExceptionCodeManager().getDescription(ExceptionCodeDescriptor.SERVER_OK)))
+                getExceptionCodeManager().getDescription(ExceptionCodeDescriptor.SERVER_OK_DESC)))
             .orElseGet(() ->
                 ExecuteResult.of(null, ResultState.FAILURE,
                     getExceptionCodeManager().getCode(ExceptionCodeDescriptor.OPERATION_ERR),
-                    getExceptionCodeManager().getDescription(ExceptionCodeDescriptor.OPERATION_ERR)));
+                    getExceptionCodeManager().getDescription(ExceptionCodeDescriptor.OPERATION_ERR_DESC)));
     }
 
     public static List<String> ROLE_IDS = Arrays.asList("userId");
@@ -211,11 +211,11 @@ public abstract class BaseServiceImpl<T, ID, J extends JpaRepository<T, ID>> ext
         if (state == ResultState.SUCCESSFUL) {
             return ExecuteResult
                 .of(entity, state, getExceptionCodeManager().getCode(ExceptionCodeDescriptor.SERVER_OK), getExceptionCodeManager().getDescription(
-                    ExceptionCodeDescriptor.SERVER_OK));
+                    ExceptionCodeDescriptor.SERVER_OK_DESC));
         } else {
             return ExecuteResult
                 .of(entity, state, getExceptionCodeManager().getCode(ExceptionCodeDescriptor.OPERATION_ERR), getExceptionCodeManager().getDescription(
-                    ExceptionCodeDescriptor.OPERATION_ERR));
+                    ExceptionCodeDescriptor.OPERATION_ERR_DESC));
         }
     }
 
