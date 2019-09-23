@@ -18,8 +18,8 @@ package net.cofcool.chaos.server.demo.item;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.cofcool.chaos.server.common.core.ConfigurationSupport;
 import net.cofcool.chaos.server.common.core.ExceptionCodeDescriptor;
-import net.cofcool.chaos.server.common.core.ExceptionCodeManager;
 import net.cofcool.chaos.server.common.core.Message;
 import net.cofcool.chaos.server.common.core.SimplePage;
 import net.cofcool.chaos.server.common.security.AuthService;
@@ -43,7 +43,7 @@ public class AuthController {
 
     private AuthService<UserData, Long> authService;
 
-    private ExceptionCodeManager exceptionCodeManager;
+    private ConfigurationSupport configurationSupport;
 
     private PersonService<Person> personService;
 
@@ -53,9 +53,9 @@ public class AuthController {
     }
 
     @Autowired
-    public void setExceptionCodeManager(
-        ExceptionCodeManager exceptionCodeManager) {
-        this.exceptionCodeManager = exceptionCodeManager;
+    public void setConfigurationSupport(
+        ConfigurationSupport configurationSupport) {
+        this.configurationSupport = configurationSupport;
     }
 
     @Autowired
@@ -71,26 +71,33 @@ public class AuthController {
 
     @RequestMapping("/user")
     public Message<User> test(User user) {
-        return Message.of(
-            exceptionCodeManager.getCode(ExceptionCodeDescriptor.SERVER_OK),
-            exceptionCodeManager.getDescription(ExceptionCodeDescriptor.SERVER_OK_DESC),
-            user);
+        return configurationSupport.getMessageWithKey(
+            ExceptionCodeDescriptor.SERVER_OK,
+            ExceptionCodeDescriptor.SERVER_OK_DESC,
+            user
+        );
     }
 
     @RequestMapping("/unauth")
     public Message unauth(String ex) {
-        return Message.of(
-            exceptionCodeManager.getCode(ExceptionCodeDescriptor.AUTH_ERROR),
-            ex
+        return configurationSupport.getMessage(
+            ExceptionCodeDescriptor.AUTH_ERROR,
+            true,
+            ex,
+            false,
+            null
         );
     }
 
 
     @RequestMapping("/unlogin")
     public Message unlogin(String ex) {
-        return Message.of(
-            exceptionCodeManager.getCode(ExceptionCodeDescriptor.NO_LOGIN),
-            ex
+        return configurationSupport.getMessage(
+            ExceptionCodeDescriptor.NO_LOGIN,
+            true,
+            ex,
+            false,
+            null
         );
     }
 
