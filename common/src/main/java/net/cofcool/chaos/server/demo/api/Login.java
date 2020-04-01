@@ -19,6 +19,8 @@ package net.cofcool.chaos.server.demo.api;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import net.cofcool.chaos.server.common.security.AbstractLogin;
+import net.cofcool.chaos.server.common.security.exception.CaptchaErrorException;
+import net.cofcool.chaos.server.core.support.SimpleExceptionCodeDescriptor;
 
 
 public class Login extends AbstractLogin {
@@ -30,6 +32,16 @@ public class Login extends AbstractLogin {
 
     @NotNull
     private String password;
+
+    private String captcha;
+
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
+    }
 
     @Override
     public String getUsername() {
@@ -53,5 +65,13 @@ public class Login extends AbstractLogin {
 
     protected net.cofcool.chaos.server.common.security.Device checkRequestAgent(HttpServletRequest servletRequest) {
        return Device.BROWSER;
+    }
+
+    @Override
+    protected void checkCaptcha(HttpServletRequest servletRequest) throws CaptchaErrorException {
+        // just test
+        if (captcha != null && captcha.equalsIgnoreCase("1234")) {
+            throw new CaptchaErrorException("captcha error", SimpleExceptionCodeDescriptor.CAPTCHA_ERROR_VAL);
+        }
     }
 }

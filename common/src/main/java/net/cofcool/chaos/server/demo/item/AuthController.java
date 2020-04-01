@@ -16,17 +16,12 @@
 
 package net.cofcool.chaos.server.demo.item;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import net.cofcool.chaos.server.common.core.ConfigurationSupport;
 import net.cofcool.chaos.server.common.core.ExceptionCodeDescriptor;
 import net.cofcool.chaos.server.common.core.Message;
 import net.cofcool.chaos.server.common.core.SimplePage;
-import net.cofcool.chaos.server.common.security.AuthService;
 import net.cofcool.chaos.server.common.security.User;
 import net.cofcool.chaos.server.core.annotation.Api;
-import net.cofcool.chaos.server.demo.api.Login;
-import net.cofcool.chaos.server.demo.api.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,10 +36,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/auth", method = {RequestMethod.GET, RequestMethod.POST})
 public class AuthController {
 
-    private AuthService<UserData, Long> authService;
-
-    private ConfigurationSupport configurationSupport;
-
     private PersonService<Person> personService;
 
     @Autowired
@@ -52,26 +43,9 @@ public class AuthController {
         this.personService = personService;
     }
 
-    @Autowired
-    public void setConfigurationSupport(
-        ConfigurationSupport configurationSupport) {
-        this.configurationSupport = configurationSupport;
-    }
-
-    @Autowired
-    public void setAuthService(
-        AuthService<UserData, Long> authService) {
-        this.authService = authService;
-    }
-
-    @RequestMapping("/login")
-    public Message<User<UserData, Long>> home(@RequestBody Login login, HttpServletRequest request, HttpServletResponse response) {
-        return authService.login(request, response, login);
-    }
-
     @RequestMapping("/user")
     public Message<User> test(User user) {
-        return configurationSupport.getMessageWithKey(
+        return ConfigurationSupport.getConfiguration().getMessageWithKey(
             ExceptionCodeDescriptor.SERVER_OK,
             ExceptionCodeDescriptor.SERVER_OK_DESC,
             user
@@ -80,7 +54,7 @@ public class AuthController {
 
     @RequestMapping("/unauth")
     public Message unauth(String ex) {
-        return configurationSupport.getMessage(
+        return ConfigurationSupport.getConfiguration().getMessage(
             ExceptionCodeDescriptor.AUTH_ERROR,
             true,
             ex,
@@ -92,7 +66,7 @@ public class AuthController {
 
     @RequestMapping("/unlogin")
     public Message unlogin(String ex) {
-        return configurationSupport.getMessage(
+        return ConfigurationSupport.getConfiguration().getMessage(
             ExceptionCodeDescriptor.NO_LOGIN,
             true,
             ex,

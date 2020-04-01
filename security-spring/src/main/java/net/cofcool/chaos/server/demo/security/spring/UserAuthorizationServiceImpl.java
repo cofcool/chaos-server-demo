@@ -25,15 +25,14 @@ import net.cofcool.chaos.server.auto.config.ChaosProperties;
 import net.cofcool.chaos.server.common.core.Message;
 import net.cofcool.chaos.server.common.security.AbstractLogin;
 import net.cofcool.chaos.server.common.security.User;
+import net.cofcool.chaos.server.common.security.UserAuthorizationService;
 import net.cofcool.chaos.server.common.security.UserStatus;
 import net.cofcool.chaos.server.demo.api.UserData;
-import net.cofcool.chaos.server.security.spring.authorization.SpringUserAuthorizationService;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserAuthorizationServiceImpl implements SpringUserAuthorizationService<UserData, Long>,
+public class UserAuthorizationServiceImpl implements UserAuthorizationService<UserData, Long>,
     InitializingBean {
 
     @Resource
@@ -60,31 +59,6 @@ public class UserAuthorizationServiceImpl implements SpringUserAuthorizationServ
     public void checkPermission(ServletRequest servletRequest, ServletResponse servletResponse,
         Object authenticationInfo, String requestPath) {
 
-    }
-
-    @Override
-    public void createUser(UserDetails user) {
-
-    }
-
-    @Override
-    public void updateUser(UserDetails user) {
-
-    }
-
-    @Override
-    public void deleteUser(String username) {
-
-    }
-
-    @Override
-    public void changePassword(String oldPassword, String newPassword) {
-
-    }
-
-    @Override
-    public boolean userExists(String username) {
-        return false;
     }
 
     @Override

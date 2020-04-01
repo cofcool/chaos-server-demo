@@ -39,30 +39,18 @@
             <artifactId>lombok</artifactId>
             <version>1.18.0</version>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <version>${spring-boot.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
-            <version>${spring-boot.version}</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.19</version>
         </dependency>
     </dependencies>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <chaos-server.version>0.4.1</chaos-server.version>
-        <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
+        <chaos-server.version>0.4.2-SNAPSHOT</chaos-server.version>
+        <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
     </properties>
 
     <profiles>
