@@ -61,4 +61,14 @@ public interface BaseService<T> extends DataAccess<T> {
     default ExecuteResult<T> simpleQueryById(T entity) {
         return queryById(entity);
     }
+
+    /**
+     * 修改
+     * @param entity 实体
+     * @param queryAgain 是否需要再次去数据库查询
+     * @return {@link ExecuteResult} 对象
+     */
+    default ExecuteResult<T> update(T entity, boolean queryAgain) {
+        return queryAgain ? update(entity) : add(entity);
+    }
 }
