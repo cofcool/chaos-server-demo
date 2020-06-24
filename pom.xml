@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <version>2.2.2.RELEASE</version>
+    </parent>
+
     <groupId>net.cofcool.chaos</groupId>
     <artifactId>chaos-server-demo</artifactId>
     <version>0.1.0</version>
@@ -15,6 +21,7 @@
         <module>data-mybatis</module>
         <module>security-shiro</module>
         <module>security-spring</module>
+        <module>message</module>
         <module>boot</module>
     </modules>
 
@@ -33,6 +40,11 @@
             <groupId>net.cofcool.chaos</groupId>
             <artifactId>chaos-server-boot-starter</artifactId>
             <version>${chaos-server.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
