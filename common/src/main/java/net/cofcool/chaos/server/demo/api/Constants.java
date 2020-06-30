@@ -19,9 +19,13 @@ package net.cofcool.chaos.server.demo.api;
 /**
  * 定义常量
  */
-public interface Constants {
+public abstract class Constants {
 
-    String PASSWORD_ERROR_VAL = "A22";
-    String PASSWORD_ERROR_DESC_VAL = "password error";
+    private Constants() {
+
+    }
+
+    public static final String PASSWORD_ERROR_VAL = "A22";
+    public static final String PASSWORD_ERROR_DESC_VAL = "password error";
 
 }

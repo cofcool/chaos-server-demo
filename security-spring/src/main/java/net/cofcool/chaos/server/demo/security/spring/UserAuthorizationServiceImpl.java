@@ -42,7 +42,9 @@ public class UserAuthorizationServiceImpl implements UserAuthorizationService<Us
 
     @Override
     public User<UserData, Long> queryUser(AbstractLogin loginUser) {
-        return users.get(loginUser.getUsername());
+        User<UserData, Long> user = users.get(loginUser.getUsername());
+        user.setDevice(loginUser.getDevice());
+        return user;
     }
 
     @Override

@@ -18,12 +18,13 @@ package net.cofcool.chaos.server.demo.api;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
-import net.cofcool.chaos.server.common.security.AbstractLogin;
+import net.cofcool.chaos.server.common.security.AbstractLogin.DefaultLogin;
+import net.cofcool.chaos.server.common.security.Device;
 import net.cofcool.chaos.server.common.security.exception.CaptchaErrorException;
 import net.cofcool.chaos.server.core.support.SimpleExceptionCodeDescriptor;
 
 
-public class Login extends AbstractLogin {
+public class Login extends DefaultLogin {
 
     private static final long serialVersionUID = -3868201780589666741L;
 
@@ -63,15 +64,23 @@ public class Login extends AbstractLogin {
         this.password = password;
     }
 
-    protected net.cofcool.chaos.server.common.security.Device checkRequestAgent(HttpServletRequest servletRequest) {
-       return Device.BROWSER;
+    @Override
+    protected Device checkRequestAgent(HttpServletRequest servletRequest) {
+        String platform = servletRequest.getParameter("platform");
+        if (net.cofcool.chaos.server.demo.api.Device.ANDROID.identifier().equals(platform)) {
+            return net.cofcool.chaos.server.demo.api.Device.ANDROID;
+        }
+
+        return super.checkRequestAgent(servletRequest);
     }
 
     @Override
-    protected void checkCaptcha(HttpServletRequest servletRequest) throws CaptchaErrorException {
+    protected void checkCaptcha(HttpServletRequest servletRequest,
+        net.cofcool.chaos.server.common.security.Device device) {
         // just test
         if (captcha != null && captcha.equalsIgnoreCase("1234")) {
             throw new CaptchaErrorException("captcha error", SimpleExceptionCodeDescriptor.CAPTCHA_ERROR_VAL);
         }
     }
+
 }

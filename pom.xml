@@ -49,7 +49,7 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <chaos-server.version>0.4.2-SNAPSHOT</chaos-server.version>
+        <chaos-server.version>0.5.0-SNAPSHOT</chaos-server.version>
         <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
     </properties>
 
