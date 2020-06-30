@@ -16,12 +16,16 @@
 
 package net.cofcool.chaos.server.demo.api;
 
+import static net.cofcool.chaos.server.common.util.BeanUtils.getPropertyDescriptors;
+
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import javax.persistence.Transient;
 import net.cofcool.chaos.server.common.core.ExceptionCodeDescriptor;
 import net.cofcool.chaos.server.common.core.ExecuteResult;
 import net.cofcool.chaos.server.common.core.Page;
@@ -97,6 +101,56 @@ public abstract class BaseServiceImpl<T, ID, J extends JpaRepository<T, ID>> ext
         }
     }
 
+    @Override
+    public ExecuteResult<T> update(T entity) {
+        Optional<T> result = findById(entity);
+        if (result.isEmpty()) {
+            return getConfiguration().getExecuteResult(
+                null,
+                ResultState.FAILURE,
+                ExceptionCodeDescriptor.DATA_ERROR,
+                ExceptionCodeDescriptor.DATA_ERROR_DESC
+            );
+        }
+
+        T dirtyEntity = result.get();
+
+        for (PropertyDescriptor descriptor : getPropertyDescriptors(dirtyEntity.getClass())) {
+            try {
+                if (!checkUpdatingEntityProperty(descriptor.getName())) {
+                    continue;
+                }
+
+                if (descriptor.getReadMethod() != null
+                    && descriptor.getWriteMethod() != null
+                    && !descriptor.getReadMethod().isAnnotationPresent(Transient.class)
+                ) {
+                    Object val = descriptor.getReadMethod().invoke(entity);
+                    if (val != null) {
+                        descriptor.getWriteMethod().invoke(dirtyEntity, val);
+                    }
+                }
+            } catch (IllegalAccessException | InvocationTargetException ignore) {}
+        }
+
+        getJpaRepository().save(dirtyEntity);
+
+        return getConfiguration().getExecuteResult(
+            entity,
+            ResultState.SUCCESSFUL,
+            ExceptionCodeDescriptor.SERVER_OK,
+            ExceptionCodeDescriptor.SERVER_OK_DESC
+        );
+    }
+
+    /**
+     * 检查是否需要忽略覆盖指定值
+     * @param property 属性名曾
+     * @return 如果需要覆盖则返回 <code>true</code>, 反之为 <code>false</code>
+     */
+    protected boolean checkUpdatingEntityProperty(String property) {
+        return true;
+    }
 
     @Override
     public ResultState delete(T entity) {
