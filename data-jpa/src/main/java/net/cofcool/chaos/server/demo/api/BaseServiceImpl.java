@@ -144,7 +144,7 @@ public abstract class BaseServiceImpl<T, ID, J extends JpaRepository<T, ID>> ext
     }
 
     /**
-     * 检查是否需要忽略覆盖指定值
+     * 检查是否需要忽略覆盖指定值, 禁止修改可抛出异常, 如组织关系不可修改，可抛出 {@link IllegalStateException} 异常或自定义异常, 如 {@link net.cofcool.chaos.server.common.core.ServiceException} 等
      * @param property 属性名曾
      * @return 如果需要覆盖则返回 <code>true</code>, 反之为 <code>false</code>
      */
@@ -163,7 +163,9 @@ public abstract class BaseServiceImpl<T, ID, J extends JpaRepository<T, ID>> ext
         if (result.successful()) {
             logicDeleteCallback().apply(result.entity());
 
-            return update(result.entity()).state();
+            getJpaRepository().save(result.entity());
+
+            return ResultState.SUCCESSFUL;
         }
 
         return result.state();
