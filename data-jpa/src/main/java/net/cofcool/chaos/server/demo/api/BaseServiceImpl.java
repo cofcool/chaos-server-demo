@@ -48,11 +48,11 @@ public abstract class BaseServiceImpl<T, ID, J extends JpaRepository<T, ID>> ext
     protected Object queryWithPage(Page<T> condition, T entity) {
         Specification<T> sp = getSp();
 
-        if (condition.getStartDate() >= 0) {
-            sp = SpecificationUtils.andGreaterOrEqualTo(sp, "startTime", Page.convertToDate(condition.getStartDate()));
+        if (condition.getStartDate() > 0) {
+            sp = SpecificationUtils.andGreaterOrEqualTo(sp, "createTime", Page.convertToDate(condition.getStartDate()));
         }
-        if (condition.getEndDate() >= 0) {
-            sp = SpecificationUtils.andLessOrEqualTo(sp, "endTime", Page.convertToDate(condition.getEndDate()));
+        if (condition.getEndDate() > 0) {
+            sp = SpecificationUtils.andLessOrEqualTo(sp, "createTime", Page.convertToDate(condition.getEndDate()));
         }
 
         if (shouldCheck()) {

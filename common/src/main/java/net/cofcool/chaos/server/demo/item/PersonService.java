@@ -17,12 +17,15 @@
 package net.cofcool.chaos.server.demo.item;
 
 import net.cofcool.chaos.server.common.core.BaseComponent;
+import net.cofcool.chaos.server.common.core.ExecuteResult;
 import net.cofcool.chaos.server.demo.api.BaseService;
 
 /**
  * @author CofCool
  */
 @BaseComponent
-public interface PersonService<T extends Person> extends BaseService<T> {
+public interface PersonService<T> extends BaseService<T> {
+
+    ExecuteResult<T> queryByName(String name);
 
 }

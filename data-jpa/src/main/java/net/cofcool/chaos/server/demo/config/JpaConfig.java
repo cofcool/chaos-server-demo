@@ -16,12 +16,22 @@
 
 package net.cofcool.chaos.server.demo.config;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author CofCool
  */
 @Configuration
+@EnableJpaRepositories(
+    basePackages = {"net.cofcool.chaos.server.demo.data.jpa.repository"}
+)
+@EntityScan(
+    basePackages = {"net.cofcool.chaos.server.demo.data.jpa.repository.entity"}
+)
+@EnableTransactionManagement
 public class JpaConfig {
 
 }

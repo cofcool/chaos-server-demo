@@ -16,9 +16,13 @@
 
 package net.cofcool.chaos.server.demo.data.jpa.repository.entity;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
@@ -27,7 +31,9 @@ import org.hibernate.annotations.GenerationTime;
  */
 @Entity
 @Table(name = "person")
-public class Person extends net.cofcool.chaos.server.demo.item.Person {
+@NoArgsConstructor
+@Data
+public class Person implements Serializable {
 
     @Id
     @Generated(GenerationTime.INSERT)
@@ -37,27 +43,7 @@ public class Person extends net.cofcool.chaos.server.demo.item.Person {
 
     private String password;
 
-    public Long getId() {
-        return id;
-    }
+    private Timestamp createTime;
+    private Timestamp updateTime;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

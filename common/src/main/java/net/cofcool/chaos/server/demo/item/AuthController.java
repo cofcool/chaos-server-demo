@@ -19,11 +19,8 @@ package net.cofcool.chaos.server.demo.item;
 import net.cofcool.chaos.server.common.core.ConfigurationSupport;
 import net.cofcool.chaos.server.common.core.ExceptionCodeDescriptor;
 import net.cofcool.chaos.server.common.core.Message;
-import net.cofcool.chaos.server.common.core.SimplePage;
 import net.cofcool.chaos.server.common.security.User;
 import net.cofcool.chaos.server.core.annotation.Api;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,14 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/auth", method = {RequestMethod.GET, RequestMethod.POST})
 public class AuthController {
 
-    private PersonService<Person> personService;
-
-    @Autowired
-    public void setPersonService(PersonService<Person> personService) {
-        this.personService = personService;
-    }
-
     @RequestMapping("/user")
+    @SuppressWarnings("rawtypes")
     public Message<User> test(User user) {
         return ConfigurationSupport.getConfiguration().getMessageWithKey(
             ExceptionCodeDescriptor.SERVER_OK,
@@ -53,7 +44,7 @@ public class AuthController {
     }
 
     @RequestMapping("/unauth")
-    public Message unauth(String ex) {
+    public Message<Void> unauth(String ex) {
         return ConfigurationSupport.getConfiguration().getMessage(
             ExceptionCodeDescriptor.AUTH_ERROR,
             true,
@@ -65,7 +56,7 @@ public class AuthController {
 
 
     @RequestMapping("/unlogin")
-    public Message unlogin(String ex) {
+    public Message<Void> unlogin(String ex) {
         return ConfigurationSupport.getConfiguration().getMessage(
             ExceptionCodeDescriptor.NO_LOGIN,
             true,
@@ -73,10 +64,5 @@ public class AuthController {
             false,
             null
         );
-    }
-
-    @RequestMapping("/query")
-    public Message query(@RequestBody SimplePage<Person> page) {
-        return personService.query(page, page.getCondition()).result();
     }
 }
